@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { auth } from "../../lib/cookie-middleware";
 import { setUrl } from "../../lib/url-helper" 
 import prisma from "../../lib/prisma";
-import { UserInput, NextApiRequestwithUserId } from "../../interfaces-and-types";
+import { UserInput, NextApiRequestwithUserId } from "../../interfaces_and_types";
 
 async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
     try {

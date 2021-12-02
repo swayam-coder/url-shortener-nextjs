@@ -1,6 +1,6 @@
 import { HSLADefinition } from "graphql-scalars"
 import { ChangeEvent, useState } from "react"
-import { UrlMetaData } from "../interfaces-and-types"
+import { UrlMetaData } from "../interfaces_and_types"
 
 export default function Home(): JSX.Element  {
   const [url, setUrl] = useState<string | null>(null)

@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken"
 import { NextApiResponse } from "next"
-import { NextApiRequestwithUserId } from "../interfaces-and-types"
+import { NextApiRequestwithUserId } from "../interfaces_and_types"
 
 // let userId: string;
 
