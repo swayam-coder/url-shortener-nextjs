@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+tracking_work.txt
+important.txt
