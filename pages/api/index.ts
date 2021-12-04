@@ -37,4 +37,14 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
     }
 }
 
-export default auth(handler);
+// export default auth(handler);  // As we are handling jwt verification through _middleware, we dont need to use api middleware 
+export default auth
+
+export const config = {
+    api: {
+        bodyParser: {
+            sizeLimit: '1mb',
+        },
+    },
+}
+// limitations of _middleware and how it works

@@ -5,17 +5,23 @@ import { NextApiRequestwithUserId } from "../interfaces_and_types"
 // let userId: string;
 
 export const auth = (fn: any) => async (req: NextApiRequestwithUserId, res: NextApiResponse) => {
-    jwt.verify(req.cookies.user_token, process.env.JWT_SECRET, (err, decoded) => {
-        if(!err && decoded) {
-            req.userId = decoded.id
-            return fn(req, res)
+    function ErrorResponse (msg: string, statusCode: number) {
+        return new Response("user not authenticated", {
+            status: 401
+        })
+    }
+    
+    try {
+        const decoded = jwt.verify(req.cookies.user_token, process.env["JWT_SECRET"]);
+        req.userId = decoded.id;
+        return fn(req, res)
+    } catch (error) {
+        if((error as Error).message === "JsonWebTokenError") {
+            return ErrorResponse("User not authenticated", 401)
+        } else {
+            return ErrorResponse("Internal Server Error", 500)
         }
-
-        if(err?.message === "JsonWebTokenError")
-            res.status(401).json({ error: "The user is not authenticated" })
-
-        res.status(500).json({ err: "Internal Server Error" })
-    })
+    }
 }
 
 // export function getUserId(): string | null {
