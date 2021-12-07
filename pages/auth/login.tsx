@@ -1,10 +1,14 @@
-import {  } from "next/router"
+import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import { AuthInfo } from "../../interfaces_and_types"
+import { useMutation } from "react-query"
+import { login } from "../../lib/crud-operations"
 
 export default function Handler() {
     const [userInfo, setUserInfo] = useState<AuthInfo>({ email: "", password: "" })
+    const router = useRouter();
+    const { mutate, isLoading, isError, isSuccess, error } = useMutation("userlogin", login);
 
     function handleChange (e: ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
@@ -15,8 +19,25 @@ export default function Handler() {
     }
 
     async function handleSubmit() {
-      await fetch('/api/login', { method: "POST", body: JSON.stringify(userInfo) })
-      // router.replace('/');  // client side redirect...but we are using server side redirect using _middleware
+      try {
+        mutate(userInfo)
+  
+        if(isLoading) {
+          // show loading spinner
+        }
+  
+        if(isError) {
+          throw error;
+        }
+  
+        if(isSuccess) {
+          router.replace('/');  // client side redirect...
+        }
+
+        setUserInfo({ email: "", password: "" });
+      } catch (error) {
+        console.log((error as Error).message);
+      }
     }
     
     return (

@@ -36,3 +36,4 @@ yarn-error.log*
 tracking_work.txt
 important.txt
 /plain_graphql
+react-query-details.txt

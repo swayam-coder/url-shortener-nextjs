@@ -1,29 +1,21 @@
+import { HttpError } from "http-errors-enhanced";
 import jwt from "jsonwebtoken"
 import { NextResponse } from "next/server"
 import { NextRequestwithUserID } from "../interfaces_and_types"
+import { getUrl } from "../lib/url-helper";
 
-export default function middleware(req: NextRequestwithUserID) {
-    function ErrorResponse (msg: string, statusCode: number) {
-        return new Response("user not authenticated", {
-            status: 401
-        })
+export default async function middleware(req: NextRequestwithUserID) {
+    const path = req.nextUrl.pathname.split('/')[1];  // we are using req.nextUrl.pathname.split('/')[1] index because always req.nextUrl.pathname.split('/')[0] = ''
+    
+    if(["favicon.ico", "api", ""].includes(path)) {
+        return
     }
 
-    if(req.nextUrl.pathname.split('/')[1] != "auth") {
-        try {
-            const decoded = jwt.verify(req.cookies.user_token, process.env["JWT_SECRET"]);
-            req.userId = decoded.id;
+    const url = await getUrl(path);
 
-            return NextResponse.next();  // to move to next subsequent api route
-        } catch (error) {
-            if((error as Error).message === "JsonWebTokenError") {
-                return ErrorResponse("User not authenticated", 401)  // returns back with error
-            } else {
-                return ErrorResponse("Internal Server Error", 500)
-            }
-        }
+    if(url === null){
+        return new HttpError(500, "Some thing wrong happened")
+    } else {
+        NextResponse.redirect(url)
     }
-    return NextResponse.next();
 }
-
-

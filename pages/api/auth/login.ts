@@ -5,11 +5,12 @@ import bcrypt from "bcrypt"
 import dotenv from "dotenv"
 // import { } from "nookies"
 import cookie from "cookie"
+import { HttpError } from "http-errors-enhanced"
 
 dotenv.config();
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    try {  // should we keep the try catch outside the i
+    try {  // should we keep the try catch outside the if
         if(req.method === "GET") {
             const { email, password } = req.body
     
@@ -21,7 +22,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         
             if(checkEmail === null) {
                 // return res.json({ error: "you are not registered" })  // we can use this too
-                throw new Error("you are not registered")
+                throw new HttpError(401, "you are not registered")
             } 
             
             const checkPassword = await bcrypt.compare(password, checkEmail.password)  
@@ -30,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             so rather we can either return from the if block by writing return res.json("...") or throw an error for the catch block to handle */
     
             if(checkPassword === false) {        
-                throw new Error("either entered email or password were wrong")
+                throw new HttpError(401, "either entered email or password were wrong")
             }
 
             const token = jwt.sign({ email: checkEmail.email, id: checkEmail.id }, process.env.JWT_SECRET, { expiresIn: "1h" })
@@ -46,9 +47,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             }))
             // in expires you need to set the exact date when you want to expire the cookie whereas in maxAge you specify time interval
 
-            res.json({ authToken: jwt })
+            res.json({ userId: checkEmail.id })
         }
     } catch (err) {
         res.json(`${(err as Error).message}`)
     }
+}
+
+export const config = {
+    api: {
+        bodyParser: {
+            sizeLimit: '1mb',
+        },
+    },
 }

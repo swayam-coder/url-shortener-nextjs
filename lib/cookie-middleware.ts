@@ -1,3 +1,4 @@
+import { HttpError } from "http-errors-enhanced"
 import jwt from "jsonwebtoken"
 import { NextApiResponse } from "next"
 import { NextApiRequestwithUserId } from "../interfaces_and_types"
@@ -17,10 +18,16 @@ export const auth = (fn: any) => async (req: NextApiRequestwithUserId, res: Next
         return fn(req, res)
     } catch (error) {
         if((error as Error).message === "JsonWebTokenError") {
-            return ErrorResponse("User not authenticated", 401)
+            return new HttpError(401, "User not authenticated")  // returns back with error
         } else {
-            return ErrorResponse("Internal Server Error", 500)
+            return new HttpError(500, "Internal Server Error")
         }
+
+        // if((error as Error).message === "JsonWebTokenError") {
+        //     return ErrorResponse("User not authenticated", 401)
+        // } else {
+        //     return ErrorResponse("Internal Server Error", 500)
+        // }
     }
 }
 

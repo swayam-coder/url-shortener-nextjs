@@ -8,27 +8,41 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
     try {
         if(req.method == "POST") {
             const userInput: UserInput = req.body
-            const userId = req.userId
-
-            if(userId === undefined) {
-                res.status(500).json({ error: "internal server error", status: 500 })
-                return
-            }
-            
             const shortUrl = await setUrl(userInput.url);
-        
-            const result = await prisma.link.create({
-                data: {
-                    userId,
-                    url: userInput.url,
-                    shortenedUrlPath: shortUrl,
-                    title: userInput.title,
-                    description: userInput.description ?? null,
-                    category: userInput.category ?? null
-                }
-            })
 
-            res.json({ shortenedUrlpath: result.shortenedUrlPath })
+            if(req.userId) {
+                const userId = req.userId
+                
+                await prisma.user.update({
+                    where: {
+                        id: userId
+                    },
+                    data: {
+                        bookmarks: { 
+                            create: [{
+                                userId,
+                                url: userInput.url,
+                                shortenedUrlPath: shortUrl,
+                                title: userInput.title,
+                                description: userInput.description ?? null,
+                                category: userInput.category ?? null
+                            }]
+                        }
+                    }
+                }) 
+            } else {
+                await prisma.link.create({
+                    data: {
+                        url: userInput.url,
+                        shortenedUrlPath: shortUrl,
+                        title: userInput.title,
+                        description: userInput.description ?? null,
+                        category: userInput.category ?? null
+                    }
+                })
+            }
+
+            res.json({ shortenedUrlpath: shortUrl })
         } else {
             throw new Error("Bad Requeat")
         }
@@ -38,7 +52,7 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
 }
 
 // export default auth(handler);  // As we are handling jwt verification through _middleware, we dont need to use api middleware 
-export default auth
+export default handler
 
 export const config = {
     api: {

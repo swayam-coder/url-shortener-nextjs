@@ -4,6 +4,7 @@ import prisma from "../../../lib/prisma"
 import bcrypt from "bcrypt"
 import dotenv from "dotenv"
 import cookie from "cookie"
+import { HttpError } from "http-errors-enhanced"
 
 dotenv.config();
 
@@ -19,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             })
         
             if(checkEmail != null) {
-                throw new Error("you are already registered")
+                throw new HttpError('', "you are already registered")
             } 
             
             const hashedPasword = await bcrypt.hash(password, 10);  
@@ -32,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             })
 
             if(!user) {
-                throw new Error("internal server error, couldn't register")
+                throw new HttpError(500, "internal server error, couldn't register")
             }
 
             const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" })
@@ -47,9 +48,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 // encode: 
             }))
 
-            res.json({ authToken: jwt })
+            res.json({ userId: user.id })
         } else {
-            throw new Error("Internal server error");
+            throw new HttpError(500,"Internal server error");
         }
     } catch (err) {
         res.json(`${(err as Error).message}`)

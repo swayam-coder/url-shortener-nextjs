@@ -21,15 +21,14 @@ model User {
   updatedAt DateTime @updatedAt
   email     String   @unique
   photo     String?
-  // role      Role     @default(USER) // remove this
   password  String
-  bookmarks Link[]  @relation("ShortenedLinks") // change name to links
+  bookmarks Link[]  @relation("ShortenedLinks") 
 }
 
 model Link {
   id               String   @id @default(uuid())
-  userId           String
-  title            String // Find a way to modify this data before insertion 
+  userId           String?
+  title            String 
   description      String? 
   url              String 
   shortenedUrlPath String
