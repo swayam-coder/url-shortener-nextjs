@@ -7,7 +7,7 @@ import { UserInput, NextApiRequestwithUserId } from "../../interfaces_and_types"
 async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
     if(req.method === "GET") {
         
-        const results = prisma.user.findFirst({
+        const results = req.prisma.user.findFirst({
             where: {
                 id: req.userId
             }

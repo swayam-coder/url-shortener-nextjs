@@ -32,7 +32,9 @@ model Link {
   description      String? 
   url              String 
   shortenedUrlPath String
+  clicks           Int @default(0)
   category         String? 
+  enabled          Boolean @default(true)
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   users            User[] @relation("ShortenedLinks", fields: [userId], references: [id])

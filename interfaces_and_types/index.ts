@@ -1,12 +1,14 @@
 import { NextApiRequest } from "next";
 import { NextRequest } from "next/server";
+import { PrismaClient } from "@prisma/client";
 
 export interface UserInput extends UrlMetaData {
     url: string
 }
 
 export type NextApiRequestwithUserId = NextApiRequest & {
-    userId?: string
+    userId?: string,
+    prisma: PrismaClient
 }
 
 export interface UrlMetaData {
@@ -21,6 +23,12 @@ export interface AuthInfo {
     photo?: any
 }
 
+export interface IUserContext {
+    userId: string | undefined,
+    setUserId: React.Dispatch<React.SetStateAction<string | undefined>> | undefined
+}
+
 export interface NextRequestwithUserID extends NextRequest {
-    userId?: string
+    userId?: string,
+    prisma: PrismaClient
 }

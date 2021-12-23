@@ -1,14 +1,19 @@
 import { useRouter } from "next/router"
 import { ChangeEvent, useState } from "react"
-import { Form, Button } from "react-bootstrap"
+import Image from "next/image"
 import { AuthInfo } from "../../interfaces_and_types"
-import { useMutation } from "react-query"
+import { useMutation, useQuery } from "react-query"
 import { login } from "../../lib/crud-operations"
+import { Login } from "../../styles/styled-components/login"
+import { useUserContext } from "../../contexts"
+import { HttpError } from "http-errors-enhanced"
+import { AxiosError, AxiosResponse } from "axios"
 
-export default function Handler() {
+export default async function Handler() {
     const [userInfo, setUserInfo] = useState<AuthInfo>({ email: "", password: "" })
     const router = useRouter();
-    const { mutate, isLoading, isError, isSuccess, error } = useMutation("userlogin", login);
+
+    const { mutate, isLoading, isError, isSuccess, error, data } = useMutation<AxiosResponse, AxiosError, AuthInfo, () => Response>("userlogin", login);
 
     function handleChange (e: ChangeEvent<HTMLInputElement>) {
         e.preventDefault()
@@ -30,8 +35,12 @@ export default function Handler() {
           throw error;
         }
   
-        if(isSuccess) {
-          router.replace('/');  // client side redirect...
+        if(isSuccess){
+          if(data) {
+            router.replace('/');  // client side redirect...
+          } else {
+            throw new HttpError(500, "something wrong happened")
+          }
         }
 
         setUserInfo({ email: "", password: "" });
@@ -41,22 +50,33 @@ export default function Handler() {
     }
     
     return (
-      <>
-        <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control type="email" name="email" placeholder="Enter email" onChange={handleChange}/>
-            </Form.Group>
-          
-            <Form.Group className="mb-3" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" name="password" placeholder="Password" onChange={handleChange}/>
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Log In
-            </Button>
-        </Form>
-      </>
+      <Login>
+        <body className="text-center">
+            <main className="form-signin">
+                <form>
+                {/* <Image className="mb-4" src="" alt="" width="72" height="57" /> */}
+                    <h1 className="h3 mb-3 fw-normal">Sign in</h1>
+                
+                    <div className="form-floating">
+                        <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
+                        <label htmlFor="floatingInput">Email address</label>
+                    </div>
+                    <div className="form-floating">
+                        <input type="password" className="form-control" id="floatingPassword" placeholder="Password" />
+                        <label htmlFor="floatingPassword">Password</label>
+                    </div>
+                
+                    <div className="checkbox mb-3">  {/* will make this are you a robot */}
+                        <label>
+                            <input type="checkbox" value="remember-me" /> Remember me
+                        </label>
+                    </div>
+                    <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
+                    <p className="mt-5 mb-3 text-muted">&copy; 2021–2022</p>
+                </form>
+            </main>
+        </body>
+      </Login>
     )
 }
 

@@ -8,12 +8,12 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
     try {
         if(req.method == "POST") {
             const userInput: UserInput = req.body
-            const shortUrl = await setUrl(userInput.url);
+            const shortUrlpath = await setUrl(userInput.url);
 
             if(req.userId) {
                 const userId = req.userId
                 
-                await prisma.user.update({
+                await req.readableDidReadprisma.user.update({
                     where: {
                         id: userId
                     },
@@ -22,7 +22,7 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
                             create: [{
                                 userId,
                                 url: userInput.url,
-                                shortenedUrlPath: shortUrl,
+                                shortenedUrlPath: shortUrlpath,
                                 title: userInput.title,
                                 description: userInput.description ?? null,
                                 category: userInput.category ?? null
@@ -31,10 +31,10 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
                     }
                 }) 
             } else {
-                await prisma.link.create({
+                await req.readableDidReadprisma.link.create({
                     data: {
                         url: userInput.url,
-                        shortenedUrlPath: shortUrl,
+                        shortenedUrlPath: shortUrlpath,
                         title: userInput.title,
                         description: userInput.description ?? null,
                         category: userInput.category ?? null
@@ -42,7 +42,7 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
                 })
             }
 
-            res.json({ shortenedUrlpath: shortUrl })
+            res.json({ shortenedUrlpath: shortUrlpath })
         } else {
             throw new Error("Bad Requeat")
         }

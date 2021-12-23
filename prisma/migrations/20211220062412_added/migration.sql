@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE `link` ADD COLUMN `clicks` INTEGER NOT NULL DEFAULT 0,
+    ADD COLUMN `enabled` BOOLEAN NOT NULL DEFAULT true;

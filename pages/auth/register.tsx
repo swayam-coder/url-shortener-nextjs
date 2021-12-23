@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react"
-import { Form, Button } from "react-bootstrap"
+import Image from "next/image"
 import { useRouter } from "next/router"
 import { AuthInfo } from "../../interfaces_and_types"
 import { register } from "../../lib/crud-operations";
@@ -42,27 +42,35 @@ export default function Handler() {
   
   return (
     <>
-      <Form onSubmit={handleSubmit}>
-          <Form.Group className="mb-3">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="text" placeholder="Enter Name" onChange={handleChange} />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" onChange={handleChange} />
-            <Form.Text className="text-muted">
-              We will never share your info with anyone else.
-            </Form.Text>
-          </Form.Group>
-        
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" onChange={handleChange} />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Register
-          </Button>
-      </Form>
+      <body className="text-center">
+            <main className="form-signin">
+                <form>
+                    {/* <Image className="mb-4" src="" alt="" width="72" height="57" /> */}
+                    <h1 className="h3 mb-3 fw-normal">Register</h1>
+                
+                    <div className="form-floating">
+                        <input type="email" className="form-control" id="floatingInput" placeholder="name@example.com" />
+                        <label htmlFor="floatingInput">Email address</label>
+                    </div>
+                    <div className="form-floating">
+                        <input type="password" className="form-control" id="floatingPassword" placeholder="Password" />
+                        <label htmlFor="floatingPassword">Password</label>
+                    </div>
+                    <div className="form-floating">
+                        <input type="password" className="form-control" id="floatingPassword" placeholder="Password" />
+                        <label htmlFor="floatingPassword">Password</label>
+                    </div>
+                
+                    <div className="checkbox mb-3">  {/* will make this are you a robot */}
+                        <label>
+                            <input type="checkbox" value="remember-me" /> Remember me
+                        </label>
+                    </div>
+                    <button className="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+                    <p className="mt-5 mb-3 text-muted">&copy; 2021–2022</p>
+                </form>
+            </main>
+        </body>
     </>
   )
 }

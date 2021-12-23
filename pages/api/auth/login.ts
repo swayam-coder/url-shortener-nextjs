@@ -1,20 +1,22 @@
-import jwt from "jsonwebtoken"
-import { NextApiRequest, NextApiResponse } from "next"
-import prisma from "../../../lib/prisma"
+import { NextApiResponse } from "next"
 import bcrypt from "bcrypt"
 import dotenv from "dotenv"
 // import { } from "nookies"
 import cookie from "cookie"
+import jose from "jose";
 import { HttpError } from "http-errors-enhanced"
+import { NextApiRequestwithUserId } from "../../../interfaces_and_types"
+import { returnPrivateKeyJWK } from "../../../config/keys"
+import { cookieOptions } from "../../../config/cookie-options" 
 
 dotenv.config();
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
     try {  // should we keep the try catch outside the if
-        if(req.method === "GET") {
+        if(req.method === "POST") {
             const { email, password } = req.body
     
-            const checkEmail =  await prisma.user.findFirst({
+            const checkEmail =  await req.prisma.user.findFirst({
                 where: {
                     email
                 }
@@ -34,18 +36,21 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                 throw new HttpError(401, "either entered email or password were wrong")
             }
 
-            const token = jwt.sign({ email: checkEmail.email, id: checkEmail.id }, process.env.JWT_SECRET, { expiresIn: "1h" })
+            const privateKey = await returnPrivateKeyJWK()
 
-            res.setHeader("Set-Cookie", cookie.serialize("user_token", token, {
-                httpOnly: true,
-                secure: true,
-                sameSite: true,
-                maxAge: 60 * 60 * 24,  // always use maxAge instead of expires as expires is deprecated and most browsers ignore expires if both maxAge and expires are specified
-                // domain: "",
-                // path: "",
-                // encode: 
-            }))
+            const token = await new jose.SignJWT({ email: checkEmail.email, id: checkEmail.id })
+                .setProtectedHeader({ 'alg' : 'RS256' })
+                .setIssuedAt()
+                .setIssuer("Swayam's Url Shortener")
+                .setAudience(`${process.env.VERCEL_URL}`)
+                .setSubject(checkEmail.id)
+                .setExpirationTime('1h')
+                .sign(privateKey)
+
+            res.setHeader("Set-Cookie", cookie.serialize("user_token", token, cookieOptions))
             // in expires you need to set the exact date when you want to expire the cookie whereas in maxAge you specify time interval
+
+            res.setHeader("Set-Cookie", cookie.serialize("user_id", checkEmail.id, cookieOptions))
 
             res.json({ userId: checkEmail.id })
         }
