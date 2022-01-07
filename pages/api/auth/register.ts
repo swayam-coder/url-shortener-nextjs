@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken"
 import { NextApiResponse } from "next"
 import bcrypt from "bcrypt"
 import dotenv from "dotenv"
