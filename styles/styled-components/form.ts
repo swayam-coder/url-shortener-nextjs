@@ -1,13 +1,14 @@
 import styled from "styled-components"
 
-export const Login = styled.div`
-  @import url("https://getbootstrap.com/docs/5.1/examples/sign-in/")
+const Form = styled.div`
+  @import url("https://getbootstrap.com/docs/5.1/examples/sign-in/");
   .bd-placeholder-img {
     font-size: 1.125rem;
     text-anchor: middle;
     -webkit-user-select: none;
     -moz-user-select: none;
     user-select: none;
+  }
   
   @media (min-width: 768px) {
     .bd-placeholder-img-lg {
@@ -17,7 +18,6 @@ export const Login = styled.div`
   html,
   body {
     height: 100%;
-    
   }
   
   body {
@@ -54,4 +54,6 @@ export const Login = styled.div`
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
-`
+`;
+
+export default Form

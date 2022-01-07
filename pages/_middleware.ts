@@ -1,5 +1,4 @@
 import { HttpError } from "http-errors-enhanced";
-import jwt from "jsonwebtoken"
 import { NextResponse } from "next/server"
 import { NextRequestwithUserID } from "../interfaces_and_types"
 import { getUrl } from "../lib/url-helper";
@@ -25,14 +24,15 @@ export default async function middleware(req: NextRequestwithUserID) {
                 }
             }
         }
-        return;  // Can we use NextResponse.next() here?
+
+        return NextResponse.next(); // Can we use NextResponse.next() here?
     }
 
     if(["history", "profile"].includes(path)) {
         if(!req.cookies.user_token) {
-            NextResponse.redirect('/login');
+            return NextResponse.redirect('/login');
         } else {
-            NextResponse.next();
+            return NextResponse.next();
         }
     }
 
@@ -41,7 +41,7 @@ export default async function middleware(req: NextRequestwithUserID) {
         if(url === null){
             return new HttpError(500, "Some thing wrong happened")
         } else {
-            NextResponse.redirect(url)
+            return NextResponse.redirect(url)
         }
     } else {
         return new HttpError(500, "Some thing wrong happened");

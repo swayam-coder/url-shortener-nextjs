@@ -1,17 +1,15 @@
 import { PrismaClient } from "@prisma/client";
 import { HttpError } from "http-errors-enhanced";
-import EventEmitter from "events";
 
 function getPath(): string {
     const alpha = "abcdefghijklmnopqrstuvwxyz".split("");
     return [...new Array(8)]
       .map((_) => alpha[Math.floor(Math.random() * alpha.length)])
-      .join("");
+        .join("");
 }
 
-export async function setUrl(url: string) {
-    const shortpath = getPath()
-    return shortpath
+export function getShortPath() {
+    return getPath();
 }
 
 export async function disableUrl (url: string, prisma: PrismaClient) {
@@ -40,15 +38,14 @@ export async function getUrl(shortUrl: string, prisma: PrismaClient) {
         return null
     }
 
-    
-    // await prisma.link.updateMany({  // use pub-sub
-    //     where: {
-    //         shortenedUrlPath: shortUrl
-    //     },
-    //     data: {
-    //         clicks: response.clicks + 1
-    //     }
-    // })
+    await prisma.link.updateMany({  // use pub-sub
+        where: {
+            shortenedUrlPath: shortUrl
+        },
+        data: {
+            clicks: response.clicks + 1
+        }
+    })
 
     if(response.enabled) {
         return response.url

@@ -4,14 +4,15 @@ import Image from "next/image"
 import { AuthInfo } from "../../interfaces_and_types"
 import { useMutation, useQuery } from "react-query"
 import { login } from "../../lib/crud-operations"
-import { Login } from "../../styles/styled-components/login"
+import Login from "../../styles/styled-components/form"
 import { useUserContext } from "../../contexts"
 import { HttpError } from "http-errors-enhanced"
 import { AxiosError, AxiosResponse } from "axios"
 
-export default async function Handler() {
+export default function Handler() {
     const [userInfo, setUserInfo] = useState<AuthInfo>({ email: "", password: "" })
     const router = useRouter();
+    
 
     const { mutate, isLoading, isError, isSuccess, error, data } = useMutation<AxiosResponse, AxiosError, AuthInfo, () => Response>("userlogin", login);
 
@@ -64,12 +65,6 @@ export default async function Handler() {
                     <div className="form-floating">
                         <input type="password" className="form-control" id="floatingPassword" placeholder="Password" />
                         <label htmlFor="floatingPassword">Password</label>
-                    </div>
-                
-                    <div className="checkbox mb-3">  {/* will make this are you a robot */}
-                        <label>
-                            <input type="checkbox" value="remember-me" /> Remember me
-                        </label>
                     </div>
                     <button className="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
                     <p className="mt-5 mb-3 text-muted">&copy; 2021–2022</p>

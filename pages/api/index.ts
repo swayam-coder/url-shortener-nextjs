@@ -1,19 +1,19 @@
-import { NextApiRequest, NextApiResponse } from "next";
-import { auth } from "../../lib/cookie-middleware";
-import { setUrl } from "../../lib/url-helper" 
-import prisma from "../../lib/prisma";
+import { NextApiResponse } from "next";
+// import { auth } from "../../lib/cookie-middleware";
+import { getShortPath } from "../../lib/url-helper" 
 import { UserInput, NextApiRequestwithUserId } from "../../interfaces_and_types";
 
 async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
     try {
         if(req.method == "POST") {
             const userInput: UserInput = req.body
-            const shortUrlpath = await setUrl(userInput.url);
+
+            const shortUrlpath = getShortPath();
 
             if(req.userId) {
                 const userId = req.userId
                 
-                await req.readableDidReadprisma.user.update({
+                await req.prisma.user.update({
                     where: {
                         id: userId
                     },
@@ -31,7 +31,7 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
                     }
                 }) 
             } else {
-                await req.readableDidReadprisma.link.create({
+                await req.prisma.link.create({
                     data: {
                         url: userInput.url,
                         shortenedUrlPath: shortUrlpath,
