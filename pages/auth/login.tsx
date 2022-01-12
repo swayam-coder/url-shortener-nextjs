@@ -12,7 +12,6 @@ import { AxiosError, AxiosResponse } from "axios"
 export default function Handler() {
     const [userInfo, setUserInfo] = useState<AuthInfo>({ email: "", password: "" })
     const router = useRouter();
-    
 
     const { mutate, isLoading, isError, isSuccess, error, data } = useMutation<AxiosResponse, AxiosError, AuthInfo, () => Response>("userlogin", login);
 

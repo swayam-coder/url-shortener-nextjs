@@ -20,12 +20,17 @@ const Form = styled.div`
     height: 100%;
   }
   
+  .generatebutton:hover {
+    background-color: white;
+    color: black;
+  }
+
   body {
     display: flex;
     align-items: center;
     padding-top: 40px;
     padding-bottom: 40px;
-    background-color: #f5f5f5;
+    background-color: #173a3a;;
   }
   
   .form-signin {

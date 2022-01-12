@@ -4,8 +4,24 @@ import { NextRequestwithUserID } from "../../interfaces_and_types"
 import { HttpError } from "http-errors-enhanced"
 import { returnPublicKeyJWK } from "../../config/keys"
 import { claimSet } from "../../config/jwt-claims-set"
+import { PrismaClient } from "@prisma/client"
 
 export default async function middleware(req: NextRequestwithUserID) {
+    // PrismaClient is attached to the `global` object in development to prevent
+    // exhausting your database connection limit.
+    // Learn more: https://pris.ly/d/help/next-js-best-practices
+    
+    if(typeof window === "undefined") {
+        if (process.env.NODE_ENV === 'production') {   
+            req.prisma = global.prisma = new PrismaClient();
+        } else {
+            if (!global.prisma) {    // global is a an object which is provided to us by node to store all the global variables or objects
+                global.prisma = new PrismaClient();
+            }
+            req.prisma = global.prisma;
+        }
+    }
+
     if(!(["auth"].includes(req.nextUrl.pathname.split('/')[1]))) {
         try {
             const publicKey = await returnPublicKeyJWK();

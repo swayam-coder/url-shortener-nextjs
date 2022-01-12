@@ -44,10 +44,10 @@ async function handler(req: NextApiRequestwithUserId, res: NextApiResponse) {
 
             res.json({ shortenedUrlpath: shortUrlpath })
         } else {
-            throw new Error("Bad Requeat")
+            throw new Error("Bad Request")
         }
     } catch(err) {
-        res.status(400).json({ error: "Bad Request", status: (err as Error).message })
+        res.status(500).json({ error: "Server Error", status: (err as Error).message })
     }
 }
 

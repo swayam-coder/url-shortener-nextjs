@@ -4,3 +4,4 @@ declare global {
     namespace
     var prisma : PrismaClient | undefined
 }
+

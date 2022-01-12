@@ -25,12 +25,12 @@ export default async function handler(req: NextApiRequestwithUserId, res: NextAp
                 throw new HttpError('', "you are already registered")
             } 
             
-            const hashedPasword = await bcrypt.hash(password, 10);  
+            const hashedPassword = await bcrypt.hash(password, 10);  
             
             const user = await req.prisma.user.create({ 
                 data: {
                     email,
-                    password: hashedPasword
+                    password: hashedPassword
                 }
             })
 
