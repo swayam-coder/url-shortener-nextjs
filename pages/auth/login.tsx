@@ -1,9 +1,9 @@
 import { useRouter } from "next/router"
-import { ChangeEvent, useState } from "react"
-import Image from "next/image"
+import { ChangeEvent, useState } from "react";
+import Image from "next/image";
 import { AuthInfo } from "../../interfaces_and_types"
-import { useMutation, useQuery } from "react-query"
-import { login } from "../../lib/crud-operations"
+import { useMutation, useQuery } from "react-query";
+import { login } from "../../lib/crud-operations";
 import Login from "../../styles/styled-components/form"
 import { useUserContext } from "../../contexts"
 import { HttpError } from "http-errors-enhanced"

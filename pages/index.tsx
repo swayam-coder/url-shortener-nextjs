@@ -2,7 +2,7 @@ import { ChangeEvent, useState } from "react"
 import { UrlMetaData } from "../interfaces_and_types"
 import { AxiosError } from "axios"
 import { getHistory } from "../lib/crud-operations"
-import { useRouter } from "next/router"
+import { useRouter } from "next/router";
 import Form from "../styles/styled-components/form"
 import styles from "../styles/Home.module.css"
 import toast from "react-hot-toast"

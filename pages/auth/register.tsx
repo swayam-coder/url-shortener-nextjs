@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from "react"
 import Image from "next/image"
-import { useRouter } from "next/router"
-import { AuthInfo } from "../../interfaces_and_types"
+import { useRouter } from "next/router";
+import { AuthInfo } from "../../interfaces_and_types";
 import { register } from "../../lib/crud-operations";
 import { useMutation } from "react-query"
 import Register from "../../styles/styled-components/form"

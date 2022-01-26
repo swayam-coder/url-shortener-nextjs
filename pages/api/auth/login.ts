@@ -1,7 +1,7 @@
 import { NextApiResponse } from "next"
 import bcrypt from "bcrypt"
 import dotenv from "dotenv"
-import nookies from "nookies"
+import nookies from "nookies";
 import cookie from "cookie"
 import jose from "jose";
 import { HttpError } from "http-errors-enhanced"

@@ -1,6 +1,6 @@
 import { NextApiResponse } from "next"
 import bcrypt from "bcrypt"
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 import cookie from "cookie"
 import { HttpError } from "http-errors-enhanced"
 import { NextApiRequestwithUserId } from "../../../interfaces_and_types"
