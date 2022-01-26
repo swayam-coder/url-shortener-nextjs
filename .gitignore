@@ -40,4 +40,4 @@ react-query-details.txt
 /config
 /src
 /services
-/prisma/migrations/
+prisma/migrations/
