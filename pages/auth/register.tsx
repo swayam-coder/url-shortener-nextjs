@@ -5,11 +5,12 @@ import { AuthInfo } from "../../interfaces_and_types"
 import { register } from "../../lib/crud-operations";
 import { useMutation } from "react-query"
 import Register from "../../styles/styled-components/form"
+import { useRegisterMutation } from "../../hooks/react-query/mutations/auth";
 
 export default function Handler() {
   const [userInfo, setUserInfo] = useState<AuthInfo>({ email: "", password: "" })
   const router = useRouter();
-  const { mutate, isLoading, isSuccess, isError, error } = useMutation(register);
+  const { mutate, isLoading, isSuccess, isError, error } = useRegisterMutation(userInfo)
 
   function handleChange (e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault()

@@ -7,13 +7,13 @@ import { login } from "../../lib/crud-operations"
 import Login from "../../styles/styled-components/form"
 import { useUserContext } from "../../contexts"
 import { HttpError } from "http-errors-enhanced"
-import { AxiosError, AxiosResponse } from "axios"
+import { useLoginMutation } from "../../hooks/react-query/mutations/auth"
 
 export default function Handler() {
     const [userInfo, setUserInfo] = useState<AuthInfo>({ email: "", password: "" })
     const router = useRouter();
 
-    const { mutate, isLoading, isError, isSuccess, error, data } = useMutation<AxiosResponse, AxiosError, AuthInfo, () => Response>("userlogin", login);
+    const { mutate, isLoading, isError, isSuccess, error, data } = useLoginMutation(userInfo)
 
     function handleChange (e: ChangeEvent<HTMLInputElement>) {
         e.preventDefault()

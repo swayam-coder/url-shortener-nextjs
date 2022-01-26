@@ -7,13 +7,14 @@ import Form from "../styles/styled-components/form"
 import styles from "../styles/Home.module.css"
 import toast from "react-hot-toast"
 import { useHistoryQuery, useShortenQuery } from "../hooks/react-query/queries/main"
+import { useLoginQuery } from "../hooks/react-query/queries/auth"
 
 export default function Home(): JSX.Element  {
   const [url, setUrl] = useState<string | null>(null)
   const [shortUrl, setShortUrl] = useState<string | null>(null)
   const [urlMetaData, setUrlMetaData] = useState<UrlMetaData>({ title: "", category: undefined, description: undefined })
 
-  const { data: loginInfo } = useHistoryQuery();
+  const { data: loginInfo } = useLoginQuery();
 
   const { 
     error: historyerror,
@@ -21,7 +22,7 @@ export default function Home(): JSX.Element  {
     isLoading: isHistoryLoading,
     isError: isHistoryError,
     refetch: refetchHistory 
-  } = useHistoryQuery(loginInfo, getHistory);
+  } = useHistoryQuery(loginInfo!);
 
   const { refetch: refetchurl } = useShortenQuery(url, urlMetaData, setShortUrl);
 

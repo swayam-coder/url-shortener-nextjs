@@ -17,7 +17,7 @@ export function ContextProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <UserContext.Provider value={value}>
-      { children }  {/* doubt */}
+      { children } 
     </UserContext.Provider>
   )
 }

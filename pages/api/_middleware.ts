@@ -25,8 +25,10 @@ export default async function middleware(req: NextRequestwithUserID) {
     if(!(["auth"].includes(req.nextUrl.pathname.split('/')[1]))) {
         try {
             const publicKey = await returnPublicKeyJWK();
+
+            const userToken = req.cookies.user_token ?? "";
             
-            const { payload, protectedHeader } = await jose.jwtVerify((req.cookies.user_token), publicKey, {...claimSet, subject: req.cookies.user_id})
+            const { payload, protectedHeader } = await jose.jwtVerify(userToken, publicKey, {...claimSet, subject: req.cookies.user_id})
             req.userId = (payload.id as string);
 
             return NextResponse.next();  // to move to next subsequent api route

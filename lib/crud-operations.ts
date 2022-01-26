@@ -3,11 +3,11 @@ import { AuthInfo, AxiosResponseModified } from "../interfaces_and_types";
 import { UrlMetaData } from "../interfaces_and_types";
 
 export function login(userInfo: AuthInfo) {
-    return axios.post('/api/login', userInfo)
+    return axios.post<any, AxiosResponseModified>('/api/login', userInfo)
 }
 
 export function register(userInfo: AuthInfo) {
-    return axios.post('/api/login', userInfo)
+    return axios.post<any, AxiosResponseModified>('/api/register', userInfo)
 }
 
 export function getHistory() {
