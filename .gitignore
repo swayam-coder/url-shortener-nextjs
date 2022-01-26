@@ -41,3 +41,4 @@ react-query-details.txt
 /src
 /services
 prisma/migrations/
+.next
