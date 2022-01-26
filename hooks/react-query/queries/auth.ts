@@ -4,5 +4,5 @@ import { AxiosResponseModified } from "../../../interfaces_and_types";
 import { AuthQueryKeys } from "../query-keys";
 
 export function useLoginQuery() {
-    return useQuery<AxiosResponseModified, AxiosError>(AuthQueryKeys.UserLogin);
+    return useQuery<AxiosResponseModified, AxiosError>(AuthQueryKeys.UserLogin)
 }

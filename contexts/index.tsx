@@ -19,5 +19,5 @@ export function ContextProvider({ children }: { children: React.ReactNode }) {
     <UserContext.Provider value={value}>
       { children } 
     </UserContext.Provider>
-  )
+  );
 }

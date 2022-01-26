@@ -39,5 +39,5 @@ export function useHistoryQuery(logininfo: AxiosResponseModified) {
         // enabled: logininfo ? (logininfo.userId ? true : false) : false,  // this is to prevent loading if logininfo isnt available and if login is available then fetching is done before hand
         enabled: false,
         refetchOnWindowFocus: false
-    });
+    })
 }

@@ -6,9 +6,9 @@ import { login, register } from "../../../lib/crud-operations";
 import { AuthQueryKeys } from "../query-keys";
 
 export function useLoginMutation(userInfo: AuthInfo) {
-    return useMutation<AxiosResponseModified, AxiosError, AuthInfo>(AuthQueryKeys.UserLogin, (userInfo) => login(userInfo));
+    return useMutation<AxiosResponseModified, AxiosError, AuthInfo>(AuthQueryKeys.UserLogin, (userInfo) => login(userInfo))
 }
 
 export function useRegisterMutation(userInfo: AuthInfo) {
-    return useMutation<AxiosResponseModified, AxiosError, AuthInfo>(AuthQueryKeys.UserLogin, (userInfo) => register(userInfo));
+    return useMutation<AxiosResponseModified, AxiosError, AuthInfo>(AuthQueryKeys.UserLogin, (userInfo) => register(userInfo))
 }
