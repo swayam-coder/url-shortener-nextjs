@@ -1,0 +1,8 @@
+package messages
+
+const (
+	UNAUTHORIZED = 401
+	FORBIDDEN = 403
+	INTERNAL_SERVER_ERROR = 500
+	SUCCESS = 200
+)
