@@ -1,3 +1,5 @@
+#### * Rearranging this project in a monorepo setup with Golang + Gin backend (see monorepo branch)
+
 # SLink
 #### A URL Shortener and Manager App built by using NextJS, React Query, Prisma.
 
