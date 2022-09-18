@@ -1,4 +1,4 @@
-#### * Currently rearranging the project to a monorepo setup (NX Repo) with Golang + Gin backend: [See monorepo branch](https://github.com/swayam-coder/url-shortener-nextjs/tree/monorepo)
+#### * Currently rearranging the project to a monorepo setup (NX Repo) with Golang + Gin backend: See "monorepo" branch
 
 # SLink
 #### A URL Shortener and Manager App built by using NextJS, React Query, Prisma.
